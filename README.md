@@ -43,3 +43,25 @@ Geojit star ratings are displayed from the workbook with their source context. M
 portfolio.js owns draft validation and rendering. gift.js generates a self-contained illustrated HTML keepsake with embedded logo and festive artwork. Private collection exports include portfolio entries and a brief summary; generic greeting shares exclude answers and amounts. Internet access is needed when initially generating the download to read local site images, but the downloaded HTML embeds those images and works offline.
 
 Smooth entrance and spring-like button/card motion respect reduced-motion settings. Browser visual QA remains unavailable; parsed DOM tests cover the new behaviour.
+
+## Validation update — 20 October 2026
+
+- One-time stocks and funds share the same budget, independent of the selected tab. Monthly SIP profiles cannot allocate shares. Editing profile answers clears the allocation.
+- One validator runs on add/edit, restore, device save and private export. Restore removes invalid entries and reports how many; exports include both asset types.
+- SIP allocation requires `sipEligible: true`, a finite positive `sipMinimum`, `sipTermsVerified: true`, an HTTPS `sipTermsUrl` and future `sipTermsValidUntil`. The minimum is max(1000, scheme minimum). These fields are not present in the workbook: schemes remain browsable, but SIP allocation is blocked until verified terms are entered. Do not fill missing terms with assumptions.
+- Stock targets and notes require approved status, HTTPS official research URL, nonfuture research date and future `validUntil`.
+- This is still a user-built planning draft, not an automatic approved model allocation or transaction interface.
+
+### Previous-session closing prices
+
+`prices.js` loads after the campaign data. Prices are explicitly labeled previous-session close, show their source/date and use two decimal places. They are not live CMP. No prices have been invented or published from a source lacking confirmed display permission.
+
+NSE's daily UDiFF archive was reachable and its 19 October 2026 report contained all ten campaign EQ symbols. Public download does not establish permission for public commercial display. NSE terms (https://www.nseindia.com/static/nse-terms-of-use) restrict redistribution and automated collection. No automatic scraper or scheduled NSE job is enabled. Use a permitted Geojit/exchange/vendor feed before activating public prices.
+
+Import a permitted local UDiFF CSV using `scripts/import_closes.py --help`. It validates all ten symbols, positive finite close prices, EQ series, unique records and one past trading date before atomically updating prices.js. It does not fetch or publish anything. Commit prices.js to deploy the verified snapshot.
+
+Set `--valid-until` to the next expected closing report's availability, using a verified exchange session calendar (including holidays and special sessions). This is explicit operator-maintained validity, not a built-in holiday calendar. An old close can remain usable across nontrading days; failed refresh must not extend expiry. Expired data blocks quantities/save until refreshed. The importer limits validity to ten calendar days from the source report. Automatic refreshing remains pending an authorized provider and its trading-session metadata.
+
+### Regression test
+
+With Node and `linkedom` installed, run `node tests/validation.cjs`. Tests use synthetic quotes/terms only and never write them to production data. Coverage: shared budget, missing/expired closes, weekend validity, restore repricing, hidden stale research, SIP eligibility/minimums, monthly/one-time isolation, invalid budgets, combined export and generic sharing privacy.

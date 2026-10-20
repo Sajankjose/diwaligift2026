@@ -11,3 +11,5 @@ Not verified in a real browser: responsive layout at 360/390/768/1024/1440 px, n
 No authenticated dealer/customer routing, lead submission or order execution backend. User-visible contact guidance makes this limitation explicit. See README.md for remaining source fields and approvals.
 
 Update checks passed: monthly minimum ₹1,000; per-scheme amount validation; no overspending; source rating rendering; stock whole-share entry; pending and stale CMP handling; short-horizon portfolio suppression; private export contains positions; generic greeting excludes personal values; embedded logo/artwork in exports.
+
+20 October validation update: tests/validation.cjs PASS. Existing 133-scheme dataset unchanged. No approved SIP terms, research or public-display-authorized prices were fabricated. Automated DOM checks cover all reproduced allocation defects; no visual browser verification was available in this session. Closing price ingestion is implemented, but live automatic refresh is not enabled pending a permitted source. Existing Word rules document describes the earlier version; this README records the revised behavior.
