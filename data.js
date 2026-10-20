@@ -2,3 +2,79 @@ window.CAMPAIGN = {"campaignId": "DIWALI_2026", "advisorUrl": null, "authenticat
 
 window.CAMPAIGN.stockThemes=[{name:'Foundations of Finance',icon:'▥',text:'The financial institutions supporting households, businesses and the wider economy.',names:['ICICI Bank','Kotak Mahindra Bank'],sector:'Banking',risk:'Credit quality, interest-rate changes and banking regulation.'},{name:'Building Tomorrow',icon:'⌂',text:'Infrastructure, engineering and industrial development.',names:['Larsen & Toubro','UltraTech Cement','BEML'],sector:'Infrastructure & industry',risk:'Project execution, demand cycles, input costs and capital intensity.'},{name:'The Changing World',icon:'✧',text:'Technology-enabled services, digital transformation and healthcare-related services.',names:['Tech Mahindra','Sagility'],sector:'Technology-enabled services',risk:'Client concentration, overseas demand and changing technology.'},{name:'The Aspirational Economy',icon:'◇',text:'Consumption, organised retail and changing consumer aspirations.',names:['Kalyan Jewellers'],sector:'Jewellery retail',risk:'Consumer demand, inventory costs and competitive pressure.'},{name:'Moving the Future',icon:'↗',text:'Manufacturing, automotive components and energy storage.',names:['Motherson','Exide Industries'],sector:'Automotive & energy storage',risk:'Industry cycles, input costs and technology transitions.'}];
 window.CAMPAIGN.stocks=window.CAMPAIGN.stockThemes.flatMap((t,i)=>t.names.map(name=>({name,theme:i,approvalStatus:'pending',officialUrl:null,validUntil:null})));
+
+// Edit these research records when approved information is available. ISO timestamp required for CMP.
+window.CAMPAIGN.stockResearch = {
+  "ICICI Bank": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "Tech Mahindra": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "Larsen & Toubro": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "Exide Industries": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "Kalyan Jewellers": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "Sagility": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "BEML": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "Motherson": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "Kotak Mahindra Bank": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  },
+  "UltraTech Cement": {
+    "cmp": null,
+    "priceAsOf": null,
+    "target": null,
+    "researchDate": null,
+    "researchNote": null
+  }
+};
+window.CAMPAIGN.stocks.forEach(s=>Object.assign(s,window.CAMPAIGN.stockResearch[s.name]));
+window.CAMPAIGN.campaignSipMinimum=1000;

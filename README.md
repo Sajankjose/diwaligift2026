@@ -31,3 +31,15 @@ Stocks are arranged in five business themes. Mutual funds have category selectio
 Research theses, dates, approved symbols, current report links and scheme riskometers/SIP terms require verification. No transaction integration is enabled. Full suitability is not inferred from four answers. No allocations or returns are invented.
 
 Automated routing and parsed-DOM interaction tests passed. Browser/mobile visual QA and complete Figma component parity remain unverified. Refer to QA.md. Do not distribute the campaign publicly until approved.
+
+
+## Portfolio update — 20 October 2026
+Results now include a user-created portfolio draft. Add chosen funds to the draft and edit each amount; monthly entries have a campaign floor of ₹1,000 per scheme. This is a campaign constraint, not a verified scheme SIP minimum. One-time entries use the workbook minimum and honour the lump-sum restriction. Amounts cannot exceed the stated budget. No unapproved equal-weight or risk-based model portfolio is generated.
+
+Stocks can be added with whole-share quantities. In data.js, edit CAMPAIGN.stockResearch by company name to populate CMP, priceAsOf (ISO timestamp with timezone), target, researchDate and researchNote. Missing figures show “Awaiting update”. CMP must be positive and dated within the last 24 hours to calculate draft values. This is a snapshot, not a live quote feed. Stock subtotals exclude unpriced shares and execution charges. A target only displays with a research date; it is not a guarantee.
+
+Geojit star ratings are displayed from the workbook with their source context. Missing ratings remain unavailable. The October edition uses September source data.
+
+portfolio.js owns draft validation and rendering. gift.js generates a self-contained illustrated HTML keepsake with embedded logo and festive artwork. Private collection exports include portfolio entries and a brief summary; generic greeting shares exclude answers and amounts. Internet access is needed when initially generating the download to read local site images, but the downloaded HTML embeds those images and works offline.
+
+Smooth entrance and spring-like button/card motion respect reduced-motion settings. Browser visual QA remains unavailable; parsed DOM tests cover the new behaviour.

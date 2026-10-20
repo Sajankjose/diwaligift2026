@@ -9,3 +9,5 @@ Source import: 133 funds, exact workbook names and categories, original minimums
 Not verified in a real browser: responsive layout at 360/390/768/1024/1440 px, native download/share, keyboard/screen-reader behaviour, motion and visual contrast rendering. Supported browser-control capability unavailable. These remain pre-publication QA gates, alongside full Geojit design-system and compliance approval.
 
 No authenticated dealer/customer routing, lead submission or order execution backend. User-visible contact guidance makes this limitation explicit. See README.md for remaining source fields and approvals.
+
+Update checks passed: monthly minimum ₹1,000; per-scheme amount validation; no overspending; source rating rendering; stock whole-share entry; pending and stale CMP handling; short-horizon portfolio suppression; private export contains positions; generic greeting excludes personal values; embedded logo/artwork in exports.
