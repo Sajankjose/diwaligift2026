@@ -1,3 +1,11 @@
+## Product-first release — 20 October 2026
+
+PASS: JavaScript syntax checks and DOM integration suite (tests/validation.cjs). All three entry choices; Equity → MF and MF → Equity; one-time/monthly separation; shared upfront limits; scheme mode identity; quote and research expiry; scheme minimums; goal/horizon validation; saved draft migration and revalidation; final gift grouping; private export; generic share privacy.
+
+Source data is unchanged: 133 funds and ten stocks. No live public quote or verified scheme terms have been fabricated. Figma reference exposes only a cover; Figtree and Geojit green confirmed. Full component-library compliance and browser/device visual QA are not claimed.
+
+Profile thresholds are explicitly applied within the selected product instead of hiding the product. Portfolio outcomes remain user-selected drafts. Research-only gifts clearly state no allocation has been made.
+
 # QA report — 20 October 2026
 
 Passed: JavaScript syntax, 192 deterministic profile combinations, beginner monthly path, experienced opportunity-discovery path, short-horizon/strong-loss-aversion protection, no-amount exploration, change of horizon updates outcome, pending/expired research disables transaction eligibility, missing-fund-source fallback.

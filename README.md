@@ -1,3 +1,31 @@
+# Current experience — product-first Diwali journey (20 October 2026)
+
+This section supersedes the historical implementation notes below.
+
+## Journey
+Welcome → Equity / Mutual Funds / Help me choose → four profile questions → selected collection as hero → optional goal contribution check → optional complementary collection → final private gift.
+
+Equity and MF entry cards have equal weight and a one-line product description. Product choice changes visibility, not suitability. The selected product remains browsable when allocation is unavailable. “Help me choose” retains engine.js discovery routing. Direct product choice bypasses routing preference, while retaining allocation eligibility: stock drafting requires >5 years and response index 2 or 3; fund drafting requires horizon index >=2 and response index >=1. These are campaign discovery gates, not formal suitability rules. Stocks no longer require opportunity intent when the user chooses Equity directly.
+
+The user chooses constituents and amounts. No automatic model weights, approved recommendations or fabricated data are introduced. Unpriced stocks and unverified SIP schemes remain browsable but cannot be allocated. Existing quote, research expiry and scheme validation remain active.
+
+## Budgets and complementary collection
+`upfrontBudget` is shared by stocks and one-time funds. `monthlyBudget` is separate. Each fund row stores mode 0 (one-time) or 1 (monthly), so the same scheme can appear in separate plans without switching or reinterpreting amounts. Complement exploration retains all existing selections. Adding a row is explicit; opening the complementary collection does not add holdings. Legacy saved drafts migrate to the matching budget and revalidate. Profile editing asks before clearing drafts; restore and all private saves/exports validate again. Both budget groups appear in the final gift and download.
+
+## Optional goal check
+Optional target amount and exact years must be supplied together; years must match the chosen horizon. The check compares upfront budget + monthly budget × 12 × years against the target. It assumes no investment growth and excludes losses, inflation, taxes and charges. It is explicitly a contribution comparison, not a forecast. A contribution gap never increases risk or blocks an otherwise valid draft. The expandable monthly adjustment is a calculator only; it never silently alters affordability or allocations.
+
+## Design and interaction
+Geojit's referenced Figma file exposed only its Cover/Thumbnail, with Figtree and #013f3a confirmed. Full component tokens were not exposed. The implementation retains the existing supplied logo, local Figtree files and Diwali artwork, with burgundy/gold/ivory festive surfaces. No temporary Figma asset URLs are used. Native View Transitions animate page changes with a CSS entrance fallback. Buttons, disclosures and dialogs have restrained motion; prefers-reduced-motion disables it. Questions use explicit Continue, avoiding automatic focus changes while a visitor is reading.
+
+## Verification
+Run `NODE_PATH=<directory containing linkedom> node tests/validation.cjs` or install linkedom in your Node development environment and run `node tests/validation.cjs`. Tests cover product-first entry, direct and guided routes, both complement directions, budget isolation, duplicate scheme modes, shared budget limits, target validation, SIP minimums, invalid quotes/research, repricing, restore, gifts, export and generic-share privacy. Test values stay in memory and are never written to campaign data.
+
+Visual browser QA was unavailable in the implementation environment. Mobile layout uses responsive CSS, but device-level visual acceptance remains outstanding. Daily public prices and current verified SIP metadata remain data dependencies, as described below.
+
+---
+Historical notes (read the current specification above first):
+
 # Geojit Diwali — GitHub-ready website
 
 ## Upload to a new GitHub repository
