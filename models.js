@@ -1,0 +1,52 @@
+/* Proposed model definitions for Geojit research review. Not approved recommendations.
+   Explicit constituents, never automatic selection by star rating or source order. */
+(function(root){
+const fund=(isin,weight,role)=>({isin,weight,role});
+const stock=(name,weight,sector,role)=>({name,weight,sector,role});
+const common={version:'proposal-1',approvalStatus:'proposed',approvedBy:null,approvalUrl:null,validUntil:null};
+const models=[
+{id:'mf-balanced',product:'funds',title:'Measured Beginning',band:'measured',minBudget:1000,rationale:'A single balanced-advantage scheme keeps this proposed starting plan simple. Allocation between asset classes is managed by the scheme; capital is not protected.',holdings:[fund('INF179K01830',100,'Balanced-advantage allocation within one scheme.')]},
+{id:'mf-long-compact',product:'funds',title:'Long Journey · Compact',band:'long',minBudget:1000,maxBudget:2499,rationale:'One large-cap scheme avoids splitting a smaller contribution across multiple funds. This remains a market-linked equity allocation.',holdings:[fund('INF204K01562',100,'Large-cap category exposure in a single starting holding.')]},
+{id:'mf-long',product:'funds',title:'Long Journey',band:'long',minBudget:2500,rationale:'A proposed large-cap foundation with a flexi-cap allocation. Different categories can still hold overlapping stocks; holdings overlap needs research review.',holdings:[fund('INF204K01562',60,'Large-cap foundation: proposed 60% weight.'),fund('INF179K01608',40,'Flexible market-cap allocation: proposed 40% weight.')]},
+{id:'mf-growth-compact',product:'funds',title:'Long Horizon · Compact',band:'growth',minBudget:1000,maxBudget:2499,rationale:'One flexi-cap scheme provides a compact proposed starting allocation for a longer horizon. Its market exposure can fluctuate significantly.',holdings:[fund('INF179K01608',100,'Flexible market-cap allocation within one scheme.')]},
+{id:'mf-growth',product:'funds',title:'Long Horizon',band:'growth',minBudget:2500,rationale:'A proposed flexi-cap-led allocation paired with large-cap exposure. Your stated horizon and response to falls select this template, not a return forecast.',holdings:[fund('INF179K01608',60,'Flexible market-cap allocation: proposed 60% weight.'),fund('INF204K01562',40,'Large-cap category exposure: proposed 40% weight.')]},
+{id:'eq-five',product:'stocks',title:'Diwali Five-Business Model',band:'long',minBudget:10000,maxPositionPct:25,sectorCaps:{finance:30,construction:35,technology:25,mobility:40},rationale:'A proposed five-company basket from the supplied Diwali universe. Equal target weights avoid a conviction ranking that has not been supplied by research. This remains concentrated equity exposure.',holdings:[stock('ICICI Bank',20,'finance','Finance theme in the supplied campaign universe.'),stock('Larsen & Toubro',20,'construction','Infrastructure and construction theme.'),stock('Tech Mahindra',20,'technology','Technology-services theme.'),stock('Exide Industries',20,'mobility','Energy-storage and mobility theme.'),stock('Motherson',20,'mobility','Automotive-components theme.')]},
+{id:'eq-ten',product:'stocks',title:'Diwali Ten-Business Model',band:'growth',minBudget:10000,maxPositionPct:15,sectorCaps:{finance:25,construction:35,technology:25,mobility:25,jewellery:15},rationale:'The complete ten-stock campaign universe, with equal proposed target weights. This includes businesses with different risks and does not constitute a diversified whole financial portfolio.',holdings:[stock('ICICI Bank',10,'finance','Finance theme.'),stock('Kotak Mahindra Bank',10,'finance','Finance theme.'),stock('Larsen & Toubro',10,'construction','Infrastructure and construction theme.'),stock('UltraTech Cement',10,'construction','Building-materials theme.'),stock('BEML',10,'construction','Industrial-equipment theme.'),stock('Tech Mahindra',10,'technology','Technology-services theme.'),stock('Sagility',10,'technology','Healthcare-services theme.'),stock('Kalyan Jewellers',10,'jewellery','Jewellery and consumption theme.'),stock('Motherson',10,'mobility','Automotive-components theme.'),stock('Exide Industries',10,'mobility','Energy-storage and mobility theme.')]}
+].map(m=>({...common,...m}));
+function approved(m,now){return m.approvalStatus==='approved'&&!!m.approvedBy&&/^https:\/\//.test(m.approvalUrl||'')&&Date.parse(m.validUntil)>now;}
+function quote(s,now){return !!s&&Number.isFinite(s.cmp)&&s.cmp>=0.01&&Math.abs(s.cmp*100-Math.round(s.cmp*100))<1e-6&&s.priceVerified===true&&s.quoteType==='previous_close'&&!!s.priceSource&&Date.parse(s.priceAsOf)<=now&&Date.parse(s.priceValidUntil)>now;}
+function eligible(p,product){return [p.investmentIntent,p.investmentHorizon,p.volatilityResponse].every(n=>Number.isInteger(n)&&n>=0&&n<4)&&(product==='stocks'?p.investmentHorizon===3&&p.volatilityResponse>=2:p.investmentHorizon>=2&&p.volatilityResponse>=1);}
+function select(p,product,budget){if(!eligible(p,product))return null;const band=product==='stocks'?(p.volatilityResponse===3?'growth':'long'):(p.investmentHorizon===2||p.volatilityResponse===1?'measured':p.volatilityResponse===3?'growth':'long');return models.find(m=>m.product===product&&m.band===band&&budget>=m.minBudget&&budget<=(m.maxBudget??Infinity))||models.find(m=>m.product===product&&m.band===band);}
+function allocate({profile,product,mode,budget,funds,stocks,now=Date.now()}){
+const base={product,mode,budget,rows:[],allocated:0,remaining:budget,status:'unavailable',issues:[]};
+if(!['funds','stocks'].includes(product)||![0,1].includes(mode)||product==='stocks'&&mode!==0||!Number.isSafeInteger(budget)||budget<1||budget>100000000)return {...base,issues:['Choose a valid investment mode and budget.']};
+const model=select(profile,product,budget);if(!model)return {...base,issues:['Your answers call for a conversation before a model allocation. You can still explore the research.']};
+base.modelId=model.id;base.version=model.version;base.title=model.title;base.rationale=model.rationale;base.approved=approved(model,now);
+if(!model.holdings.length||model.holdings.some(h=>!Number.isFinite(h.weight)||h.weight<=0||h.weight>100)||model.holdings.reduce((s,h)=>s+h.weight,0)!==100||new Set(model.holdings.map(h=>h.isin||h.name)).size!==model.holdings.length)return {...base,issues:['Model definition is invalid.']};
+if(budget<model.minBudget)return {...base,status:'below_minimum',minimum:model.minBudget,issues:['This proposed model starts at ₹'+model.minBudget.toLocaleString('en-IN')+'.']};
+let dataReady=true;
+if(product==='funds'){
+ if(model.holdings.some(h=>{const f=funds.find(f=>f.isin===h.isin);return f&&(mode===1?f.sipEligible===false:f.lumpsumAllowed===false);}))return {...base,issues:['A model scheme is explicitly unavailable for this investment mode. Research must review the model before allocation.']};
+ const rows=model.holdings.map(h=>{const f=funds.find(f=>f.isin===h.isin);if(!f)return null;const terms=mode===1?f.sipEligible===true&&Number.isFinite(f.sipMinimum)&&f.sipMinimum>0&&f.sipTermsVerified===true&&/^https:\/\//.test(f.sipTermsUrl||'')&&Date.parse(f.sipTermsValidUntil)>now:f.lumpsumAllowed===true&&f.lumpsumTermsVerified===true&&/^https:\/\//.test(f.lumpsumTermsUrl||'')&&Date.parse(f.lumpsumTermsValidUntil)>now;
+ const minimum=mode===1?Math.max(1000,Number(f.sipMinimum)||1000):Number(f.minimum);if(!terms)dataReady=false;return {...h,name:f.name,rating:f.rating,minimum,termsVerified:terms,amount:Math.floor(budget*h.weight/100/100)*100};});
+ if(rows.some(r=>!r||!Number.isFinite(r.minimum)||r.minimum<=0))return {...base,issues:['A model constituent or its minimum is missing.']};
+ const minimum=Math.max(model.minBudget,...rows.map(r=>Math.ceil(r.minimum/(r.weight/100)/100)*100));
+ if(rows.some(r=>r.amount<r.minimum))return {...base,status:'below_minimum',minimum,issues:['The weighted scheme minimums require at least ₹'+minimum.toLocaleString('en-IN')+'. No scheme has been silently dropped.']};
+ let left=budget-rows.reduce((s,r)=>s+r.amount,0);while(left>=100){const r=rows.slice().sort((a,b)=>(budget*b.weight/100-b.amount)-(budget*a.weight/100-a.amount))[0];r.amount+=100;left-=100;}
+ base.rows=rows; if(!dataReady)base.issues.push(mode===1?'Amounts are indicative. Current SIP eligibility, minimums and terms still need verification.':'Subscription eligibility needs verification.');
+}else{
+ const rows=model.holdings.map(h=>{const s=stocks.find(s=>s.name===h.name),hasQuote=quote(s,now);if(!hasQuote)dataReady=false;return {...h,targetAmount:Math.floor(budget*h.weight)/100,amount:null,quantity:null,close:hasQuote?s.cmp:null,priceAsOf:hasQuote?s.priceAsOf:null,priceSource:hasQuote?s.priceSource:null};});
+ if(!dataReady){base.rows=rows;base.issues.push('Rupee targets are calculated. Whole-share quantities await verified closing prices for every constituent.');}
+ else{const minimum=Math.max(model.minBudget,...rows.map(r=>Math.ceil(r.close/(r.weight/100))));if(rows.some(r=>r.targetAmount<r.close))return {...base,status:'below_minimum',minimum,issues:['At least ₹'+minimum.toLocaleString('en-IN')+' is needed to include every model stock at its target weight. No stock is silently omitted.']};
+ for(const r of rows){r.quantity=Math.floor(r.targetAmount*100/Math.round(r.close*100));r.amount=Math.round(r.quantity*r.close*100)/100;}
+ const total=rows.reduce((s,r)=>s+r.amount,0),sectors={};for(const r of rows){sectors[r.sector]=(sectors[r.sector]||0)+r.amount;if(r.amount/total*100>model.maxPositionPct+1e-8)return {...base,status:'rounding_review',minimum,issues:['Whole-share rounding breaches the model position limit at this budget. Review the budget with Geojit.']};}
+ if(Object.entries(sectors).some(([k,v])=>v/total*100>(model.sectorCaps[k]??100)+1e-8))return {...base,status:'rounding_review',issues:['Whole-share rounding breaches a sector limit. Review the budget with Geojit.']};base.rows=rows;
+ }
+}
+base.allocated=Math.round(base.rows.reduce((s,r)=>s+(r.amount??r.targetAmount??0),0)*100)/100;base.remaining=Math.round((budget-base.allocated)*100)/100;
+base.status=!base.approved?'proposed':!dataReady?'pending_data':'ready';base.dataReady=dataReady;
+if(!base.approved)base.issues.unshift('Proposed model for research review. Not an approved Geojit recommendation.');
+if(base.allocated>budget)throw Error('Allocation exceeds budget');return base;
+}
+root.ModelEngine={models,select,allocate,eligible};if(typeof module!=='undefined')module.exports=root.ModelEngine;
+})(typeof window!=='undefined'?window:globalThis);

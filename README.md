@@ -1,3 +1,13 @@
+# Automatic models release — 20 October 2026
+
+The experience now generates a proposed model immediately for an eligible profile and budget, replacing manual assembly as the starting point. See [MODEL_SPEC.md](MODEL_SPEC.md) for the complete explicit model matrix, rounding, caps, status and research-review requirements. Models are proposals, not approved Geojit recommendations. Missing stock prices yield rupee targets with quantities pending; missing SIP terms yield clearly labelled indicative amounts. Neither is represented as executable.
+
+Model-first UI, budget adjustment, complementary splits and exports are implemented. Existing brand styling and product-first journey are preserved. The regression suite now covers 1,792 allocation scenarios plus integrated UI/persistence/export paths.
+
+The current release supersedes earlier statements below that no model weights are assigned.
+
+---
+
 # Current experience — product-first Diwali journey (20 October 2026)
 
 This section supersedes the historical implementation notes below.

@@ -1,3 +1,7 @@
+## Automatic models release
+
+PASS: 1,792 model allocation combinations and integration journeys. Proposed-model labels and unverified-data status persist through private exports. Public greeting remains free of financial details. No dummy production quotes or scheme terms added. Full model specification in MODEL_SPEC.md. No visual browser QA available.
+
 ## Product-first release — 20 October 2026
 
 PASS: JavaScript syntax checks and DOM integration suite (tests/validation.cjs). All three entry choices; Equity → MF and MF → Equity; one-time/monthly separation; shared upfront limits; scheme mode identity; quote and research expiry; scheme minimums; goal/horizon validation; saved draft migration and revalidation; final gift grouping; private export; generic share privacy.
