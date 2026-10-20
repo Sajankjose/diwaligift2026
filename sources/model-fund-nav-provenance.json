@@ -1,0 +1,132 @@
+{
+  "retrievedAt": "2026-10-20",
+  "method": "CAGR = ((end NAV / start NAV)^(365.25 / actual elapsed days) - 1) \u00d7 100; last available NAV on or before the anniversary date. Lump-sum NAV-based returns, not SIP XIRR. Excludes investor taxes and exit loads.",
+  "records": [
+    {
+      "isin": "INF204K01562",
+      "periodSource": "2026",
+      "date": "2026-10-19",
+      "nav": 85.2708,
+      "schemeCode": "106235",
+      "name": "Nippon India Large Cap  Fund- Growth Plan -Growth Option",
+      "raw": "106235;Nippon India Large Cap  Fund- Growth Plan -Growth Option;Regular Plan;Growth Option;INF204K01562;;85.2708;19-Oct-2026",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=19-Oct-2026&todt=19-Oct-2026"
+    },
+    {
+      "isin": "INF204K01562",
+      "periodSource": "2023",
+      "date": "2023-10-19",
+      "nav": 65.7339,
+      "schemeCode": "106235",
+      "name": "Nippon India Large Cap  Fund- Growth Plan -Growth Option",
+      "raw": "106235;Nippon India Large Cap  Fund- Growth Plan -Growth Option;Regular Plan;Growth Option;INF204K01562;;65.7339;19-Oct-2023",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2023&todt=19-Oct-2023"
+    },
+    {
+      "isin": "INF204K01562",
+      "periodSource": "2021",
+      "date": "2021-10-19",
+      "nav": 52.2947,
+      "schemeCode": "106235",
+      "name": "Nippon India Large Cap  Fund- Growth Plan -Growth Option",
+      "raw": "106235;Nippon India Large Cap  Fund- Growth Plan -Growth Option;Regular Plan;Growth Option;INF204K01562;;52.2947;19-Oct-2021",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2021&todt=19-Oct-2021"
+    },
+    {
+      "isin": "INF204K01562",
+      "periodSource": "2019",
+      "date": "2019-10-18",
+      "nav": 33.863,
+      "schemeCode": "106235",
+      "name": "Nippon India Large Cap  Fund- Growth Plan -Growth Option",
+      "raw": "106235;Nippon India Large Cap  Fund- Growth Plan -Growth Option;Regular Plan;Growth Option;INF204K01562;;33.8630;18-Oct-2019",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2019&todt=19-Oct-2019"
+    },
+    {
+      "isin": "INF179K01608",
+      "periodSource": "2026",
+      "date": "2026-10-19",
+      "nav": 1961.801,
+      "schemeCode": "101762",
+      "name": "HDFC Flexi Cap Fund - Growth Plan",
+      "raw": "101762;HDFC Flexi Cap Fund - Growth Plan;Regular Plan;Growth Option;INF179K01608;;1961.801;19-Oct-2026",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=19-Oct-2026&todt=19-Oct-2026"
+    },
+    {
+      "isin": "INF179K01608",
+      "periodSource": "2023",
+      "date": "2023-10-19",
+      "nav": 1335.615,
+      "schemeCode": "101762",
+      "name": "HDFC Flexi Cap Fund - Growth Plan",
+      "raw": "101762;HDFC Flexi Cap Fund - Growth Plan;Regular Plan;Growth Option;INF179K01608;;1335.615;19-Oct-2023",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2023&todt=19-Oct-2023"
+    },
+    {
+      "isin": "INF179K01608",
+      "periodSource": "2021",
+      "date": "2021-10-19",
+      "nav": 1033.154,
+      "schemeCode": "101762",
+      "name": "HDFC Flexi Cap Fund - Growth Plan",
+      "raw": "101762;HDFC Flexi Cap Fund - Growth Plan;Regular Plan;Growth Option;INF179K01608;;1033.154;19-Oct-2021",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2021&todt=19-Oct-2021"
+    },
+    {
+      "isin": "INF179K01608",
+      "periodSource": "2019",
+      "date": "2019-10-18",
+      "nav": 644.741,
+      "schemeCode": "101762",
+      "name": "HDFC Flexi Cap Fund - Growth Plan",
+      "raw": "101762;HDFC Flexi Cap Fund - Growth Plan;Regular Plan;Growth Option;INF179K01608;;644.741;18-Oct-2019",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2019&todt=19-Oct-2019"
+    },
+    {
+      "isin": "INF179K01830",
+      "periodSource": "2026",
+      "date": "2026-10-19",
+      "nav": 504.227,
+      "schemeCode": "100119",
+      "name": "HDFC Balanced Advantage Fund - Growth Plan",
+      "raw": "100119;HDFC Balanced Advantage Fund - Growth Plan;Regular Plan;Growth Option;INF179K01830;;504.227;19-Oct-2026",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=19-Oct-2026&todt=19-Oct-2026"
+    },
+    {
+      "isin": "INF179K01830",
+      "periodSource": "2023",
+      "date": "2023-10-19",
+      "nav": 385.327,
+      "schemeCode": "100119",
+      "name": "HDFC Balanced Advantage Fund - Growth Plan",
+      "raw": "100119;HDFC Balanced Advantage Fund - Growth Plan;Regular Plan;Growth Option;INF179K01830;;385.327;19-Oct-2023",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2023&todt=19-Oct-2023"
+    },
+    {
+      "isin": "INF179K01830",
+      "periodSource": "2021",
+      "date": "2021-10-19",
+      "nav": 288.122,
+      "schemeCode": "100119",
+      "name": "HDFC Balanced Advantage Fund - Growth Plan",
+      "raw": "100119;HDFC Balanced Advantage Fund - Growth Plan;Regular Plan;Growth Option;INF179K01830;;288.122;19-Oct-2021",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2021&todt=19-Oct-2021"
+    },
+    {
+      "isin": "INF179K01830",
+      "periodSource": "2019",
+      "date": "2019-10-18",
+      "nav": 193.815,
+      "schemeCode": "100119",
+      "name": "HDFC Balanced Advantage Fund - Growth Plan",
+      "raw": "100119;HDFC Balanced Advantage Fund - Growth Plan;Regular Plan;Growth Option;INF179K01830;;193.815;18-Oct-2019",
+      "url": "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=16-Oct-2019&todt=19-Oct-2019"
+    }
+  ],
+  "downloadHashes": {
+    "2026": "e959da534a0cf6903bbf2ee8cd2cca5b49358d42cfb88cec4f90e3aa64c5e919",
+    "2023": "dcfb38aff05841809b4deae1ae4b0e96472cfedbe328f0e073ba1983963b3b95",
+    "2021": "25ac5fb2611e1f750a746f118a39cca6f6655974b64b9586e1325172236f59d4",
+    "2019": "c7cedcb6d2d3053508bd2b536129a8776b92060d103f9ed7e3a6f4cc083500fe"
+  }
+}

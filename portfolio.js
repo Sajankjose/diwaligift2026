@@ -1,7 +1,7 @@
 /* User-created drafts, never an automatically weighted research portfolio. */
 const draft={funds:[],stocks:[]};
 function rating(f){const n=parseInt(f.rating,10);return Number.isFinite(n)?`<span class="rating" aria-label="Geojit rating ${n} out of 5">${'★'.repeat(Math.min(n,5))}${'☆'.repeat(Math.max(0,5-n))} <small>Geojit · ${n}/5</small></span>`:'<span class="rating">Geojit rating: not supplied</span>';}
-function validQuote(s){const now=Date.now();return !!s&&Number.isFinite(s.cmp)&&s.cmp>0&&s.quoteType==='previous_close'&&s.priceSource&&s.priceVerified===true&&Number.isFinite(Date.parse(s.priceAsOf))&&Date.parse(s.priceAsOf)<=now&&Number.isFinite(Date.parse(s.priceValidUntil))&&Date.parse(s.priceValidUntil)>now;}
+function validQuote(s){const now=Date.now();return !!s&&Number.isFinite(s.cmp)&&s.cmp>=0.01&&Math.abs(s.cmp*100-Math.round(s.cmp*100))<1e-6&&s.quoteType==='previous_close'&&!!s.priceSource&&Date.parse(s.priceAsOf)<=now&&((s.priceVerified===true&&Date.parse(s.priceValidUntil)>now)||(s.priceVerified===false&&s.priceBasis==='historical_reference'));}
 function validResearch(s){return !!s&&s.approvalStatus==='approved'&&/^https:\/\//.test(s.officialUrl||'')&&Number.isFinite(Date.parse(s.researchDate))&&Date.parse(s.researchDate)<=Date.now()&&Date.parse(s.validUntil)>Date.now();}
 function stockEligible(){return profile.investmentHorizon===3&&profile.volatilityResponse>=2&&Number.isInteger(profile.investmentIntent);}
 function fundEligible(){return profile.investmentHorizon>=2&&profile.volatilityResponse>=1&&Number.isInteger(profile.investmentIntent);}

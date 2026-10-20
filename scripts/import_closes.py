@@ -39,7 +39,14 @@ if __name__=='__main__':
     a=p.parse_args()
     data=build(a.csv,a.date,a.source,a.valid_until)
     dest=Path(__file__).resolve().parents[1]/'prices.js'
-    tail=dest.read_text().split('for (const q',1)[1]
+    tail=""" of window.CLOSING_PRICES.quotes) {
+ const stock=window.CAMPAIGN.stocks.find(s=>s.name===q.name);
+ if(stock) Object.assign(stock,{cmp:q.close,priceAsOf:window.CLOSING_PRICES.asOf,
+ priceSource:window.CLOSING_PRICES.source,priceSourceUrl:null,
+ priceValidUntil:window.CLOSING_PRICES.validUntil,priceVerified:true,
+ priceBasis:null,quoteType:'previous_close',symbol:q.symbol});
+}
+"""
     content='/* Verified closing-price snapshot; generated from an approved source. */\nwindow.CLOSING_PRICES = '+json.dumps(data,ensure_ascii=False)+';\nfor (const q'+tail
     temp=dest.with_suffix('.tmp');temp.write_text(content);temp.replace(dest)
     print('Validated all ten closing prices; prices.js updated.')

@@ -1,3 +1,7 @@
+# Market data update — 20 October 2026
+
+See [MARKET_DATA.md](MARKET_DATA.md) for the deployed historical stock snapshot, MF NAVs and trailing return calculations. This dated reference-pricing mode supersedes older missing-price notes below; verified current-feed expiry rules still apply to future imports.
+
 # Automatic models release — 20 October 2026
 
 The experience now generates a proposed model immediately for an eligible profile and budget, replacing manual assembly as the starting point. See [MODEL_SPEC.md](MODEL_SPEC.md) for the complete explicit model matrix, rounding, caps, status and research-review requirements. Models are proposals, not approved Geojit recommendations. Missing stock prices yield rupee targets with quantities pending; missing SIP terms yield clearly labelled indicative amounts. Neither is represented as executable.

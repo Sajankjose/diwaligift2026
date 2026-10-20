@@ -14,7 +14,7 @@ const models=[
 {id:'eq-ten',product:'stocks',title:'Diwali Ten-Business Model',band:'growth',minBudget:10000,maxPositionPct:15,sectorCaps:{finance:25,construction:35,technology:25,mobility:25,jewellery:15},rationale:'The complete ten-stock campaign universe, with equal proposed target weights. This includes businesses with different risks and does not constitute a diversified whole financial portfolio.',holdings:[stock('ICICI Bank',10,'finance','Finance theme.'),stock('Kotak Mahindra Bank',10,'finance','Finance theme.'),stock('Larsen & Toubro',10,'construction','Infrastructure and construction theme.'),stock('UltraTech Cement',10,'construction','Building-materials theme.'),stock('BEML',10,'construction','Industrial-equipment theme.'),stock('Tech Mahindra',10,'technology','Technology-services theme.'),stock('Sagility',10,'technology','Healthcare-services theme.'),stock('Kalyan Jewellers',10,'jewellery','Jewellery and consumption theme.'),stock('Motherson',10,'mobility','Automotive-components theme.'),stock('Exide Industries',10,'mobility','Energy-storage and mobility theme.')]}
 ].map(m=>({...common,...m}));
 function approved(m,now){return m.approvalStatus==='approved'&&!!m.approvedBy&&/^https:\/\//.test(m.approvalUrl||'')&&Date.parse(m.validUntil)>now;}
-function quote(s,now){return !!s&&Number.isFinite(s.cmp)&&s.cmp>=0.01&&Math.abs(s.cmp*100-Math.round(s.cmp*100))<1e-6&&s.priceVerified===true&&s.quoteType==='previous_close'&&!!s.priceSource&&Date.parse(s.priceAsOf)<=now&&Date.parse(s.priceValidUntil)>now;}
+function quote(s,now){return !!s&&Number.isFinite(s.cmp)&&s.cmp>=0.01&&Math.abs(s.cmp*100-Math.round(s.cmp*100))<1e-6&&s.quoteType==='previous_close'&&!!s.priceSource&&Date.parse(s.priceAsOf)<=now&&((s.priceVerified===true&&Date.parse(s.priceValidUntil)>now)||(s.priceVerified===false&&s.priceBasis==='historical_reference'));}
 function eligible(p,product){return [p.investmentIntent,p.investmentHorizon,p.volatilityResponse].every(n=>Number.isInteger(n)&&n>=0&&n<4)&&(product==='stocks'?p.investmentHorizon===3&&p.volatilityResponse>=2:p.investmentHorizon>=2&&p.volatilityResponse>=1);}
 function select(p,product,budget){if(!eligible(p,product))return null;const band=product==='stocks'?(p.volatilityResponse===3?'growth':'long'):(p.investmentHorizon===2||p.volatilityResponse===1?'measured':p.volatilityResponse===3?'growth':'long');return models.find(m=>m.product===product&&m.band===band&&budget>=m.minBudget&&budget<=(m.maxBudget??Infinity))||models.find(m=>m.product===product&&m.band===band);}
 function allocate({profile,product,mode,budget,funds,stocks,now=Date.now()}){
@@ -35,16 +35,33 @@ if(product==='funds'){
  let left=budget-rows.reduce((s,r)=>s+r.amount,0);while(left>=100){const r=rows.slice().sort((a,b)=>(budget*b.weight/100-b.amount)-(budget*a.weight/100-a.amount))[0];r.amount+=100;left-=100;}
  base.rows=rows; if(!dataReady)base.issues.push(mode===1?'Amounts are indicative. Current SIP eligibility, minimums and terms still need verification.':'Subscription eligibility needs verification.');
 }else{
+ base.referencePricing=model.holdings.some(h=>stocks.find(s=>s.name===h.name)?.priceBasis==='historical_reference');
+ if(base.referencePricing)base.issues.push('Quantities use the user-supplied 19 October 2026 reference closes, not live prices. Refresh prices before investing.');
  const rows=model.holdings.map(h=>{const s=stocks.find(s=>s.name===h.name),hasQuote=quote(s,now);if(!hasQuote)dataReady=false;return {...h,targetAmount:Math.floor(budget*h.weight)/100,amount:null,quantity:null,close:hasQuote?s.cmp:null,priceAsOf:hasQuote?s.priceAsOf:null,priceSource:hasQuote?s.priceSource:null};});
  if(!dataReady){base.rows=rows;base.issues.push('Rupee targets are calculated. Whole-share quantities await verified closing prices for every constituent.');}
  else{const minimum=Math.max(model.minBudget,...rows.map(r=>Math.ceil(r.close/(r.weight/100))));if(rows.some(r=>r.targetAmount<r.close))return {...base,status:'below_minimum',minimum,issues:['At least ₹'+minimum.toLocaleString('en-IN')+' is needed to include every model stock at its target weight. No stock is silently omitted.']};
  for(const r of rows){r.quantity=Math.floor(r.targetAmount*100/Math.round(r.close*100));r.amount=Math.round(r.quantity*r.close*100)/100;}
- const total=rows.reduce((s,r)=>s+r.amount,0),sectors={};for(const r of rows){sectors[r.sector]=(sectors[r.sector]||0)+r.amount;if(r.amount/total*100>model.maxPositionPct+1e-8)return {...base,status:'rounding_review',minimum,issues:['Whole-share rounding breaches the model position limit at this budget. Review the budget with Geojit.']};}
- if(Object.entries(sectors).some(([k,v])=>v/total*100>(model.sectorCaps[k]??100)+1e-8))return {...base,status:'rounding_review',issues:['Whole-share rounding breaches a sector limit. Review the budget with Geojit.']};base.rows=rows;
+ // Rounding can increase actual sector/position weights. Reduce whole shares,
+ // retaining every constituent, until caps pass; freed value stays as cash.
+ let capped=false;
+ for(let pass=0;pass<200;pass++){
+  const total=rows.reduce((s,r)=>s+r.amount,0),sectors={};for(const r of rows)sectors[r.sector]=(sectors[r.sector]||0)+r.amount;
+  let candidates=null,excess=0,cap=0;
+  const over=rows.find(r=>r.amount/total*100>model.maxPositionPct+1e-8);
+  if(over){candidates=[over];cap=model.maxPositionPct/100;excess=over.amount-cap*total;}
+  else {const sector=Object.entries(sectors).find(([k,v])=>v/total*100>(model.sectorCaps[k]??100)+1e-8);if(sector){cap=model.sectorCaps[sector[0]]/100;excess=sector[1]-cap*total;candidates=rows.filter(r=>r.sector===sector[0]);}}
+  if(!candidates){capped=true;break;}
+  candidates=candidates.filter(r=>r.quantity>1).sort((a,b)=>b.amount-a.amount||a.close-b.close);
+  if(!candidates.length)break;
+  const r=candidates[0],remove=Math.min(r.quantity-1,Math.max(1,Math.ceil((excess/(1-cap)-1e-8)/r.close)));
+  r.quantity-=remove;r.amount=Math.round(r.quantity*r.close*100)/100;
+ }
+ if(!capped)return {...base,status:'rounding_review',issues:['This budget cannot retain every constituent within the model concentration limits. Review the budget with Geojit.']};
+ base.rows=rows;
  }
 }
 base.allocated=Math.round(base.rows.reduce((s,r)=>s+(r.amount??r.targetAmount??0),0)*100)/100;base.remaining=Math.round((budget-base.allocated)*100)/100;
-base.status=!base.approved?'proposed':!dataReady?'pending_data':'ready';base.dataReady=dataReady;
+base.status=!base.approved?'proposed':!dataReady?'pending_data':base.referencePricing?'reference_pricing':'ready';base.dataReady=dataReady;
 if(!base.approved)base.issues.unshift('Proposed model for research review. Not an approved Geojit recommendation.');
 if(base.allocated>budget)throw Error('Allocation exceeds budget');return base;
 }
